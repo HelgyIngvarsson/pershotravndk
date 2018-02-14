@@ -1,0 +1,4 @@
+package: pershotravndk.com
+import:
+- package: github.com/codegangsta/martini
+- package: github.com/martini-contrib/render
