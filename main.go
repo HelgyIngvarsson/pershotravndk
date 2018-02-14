@@ -1,6 +1,8 @@
 package main
 
 import (
+	"pershotravndk.com/routes"
+
 	"github.com/codegangsta/martini"
 	"github.com/martini-contrib/render"
 )
@@ -17,6 +19,11 @@ func main() {
 		IndentJSON: true,                       // Output human readable JSON
 		IndentXML:  true,                       // Output human readable XML
 	}))
+
+	staticOptionsAssets := martini.StaticOptions{Prefix: "assets"}
+	m.Use(martini.Static("assets", staticOptionsAssets))
+
+	m.Get("/", routes.IndexHandler)
 
 	m.Run()
 }
