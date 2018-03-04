@@ -8,6 +8,7 @@ type User struct {
 	UserID       string
 	Username     string
 	Hashpassword []byte
+	Access       int
 }
 
 func InsertUser(user *User, db *sql.DB) (string, error) {

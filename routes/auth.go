@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"log"
 
 	"pershotravndk.com/models"
@@ -22,11 +21,27 @@ func Registration(rnd render.Render, r *http.Request, db *sql.DB) {
 	// if err != nil {
 	// 	log.Print(err)
 	// }
-	id, err := models.InsertUser(user, db)
+	userID, err := models.InsertUser(user, db)
 	if err != nil {
 		log.Print(err)
 	}
-	fmt.Print(id)
 
+	profile := new(models.Profile)
+	profile.Name = r.FormValue("name")
+	profile.Sername = r.FormValue("sername")
+	profile.Email = r.FormValue("email")
+	profile.Description = r.FormValue("description")
+	if r.FormValue("mailing") == "on" {
+		profile.Mailing = true
+	}
+	if err != nil {
+		log.Print(err)
+	}
+	profile.UserID = userID
+
+	err = models.InsertProfile(profile, db)
+	if err != nil {
+		log.Print(err)
+	}
 	rnd.Redirect("/")
 }
