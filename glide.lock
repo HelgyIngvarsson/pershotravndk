@@ -1,5 +1,5 @@
 hash: d4a44ebce37d3ebb77226aeb1c79e45badad59c6f72cb0dd3d69087d474962a1
-updated: 2018-03-04T16:59:39.8833822+02:00
+updated: 2018-03-06T01:42:57.3249295+02:00
 imports:
 - name: github.com/codegangsta/inject
   version: 33e0aa1cb7c019ccc3fbe049a8262a6403d30504
@@ -20,4 +20,6 @@ imports:
   subpackages:
   - bcrypt
   - blowfish
+- name: gopkg.in/robfig/cron.v2
+  version: be2e0b0deed5a68ffee390b4583a13aff8321535
 testImports: []
