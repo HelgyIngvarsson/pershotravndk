@@ -6,7 +6,7 @@ import (
 	"pershotravndk.com/models"
 	"pershotravndk.com/routes"
 
-	"github.com/codegangsta/martini"
+	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 )
 
@@ -36,5 +36,6 @@ func main() {
 	m.Get("/", routes.IndexHandler)
 	m.Get("/signUp", routes.SignUp)
 	m.Post("/registration", routes.Registration)
+	m.Get("/confirm-email/:token", routes.ConfirmProfile)
 	m.Run()
 }

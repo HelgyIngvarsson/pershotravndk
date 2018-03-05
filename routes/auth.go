@@ -1,15 +1,15 @@
 package routes
 
 import (
-	"log"
-
-	"pershotravndk.com/models"
-
 	"database/sql"
+	"log"
 	"net/http"
 
+	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"golang.org/x/crypto/bcrypt"
+	"pershotravndk.com/models"
+	"pershotravndk.com/utils"
 )
 
 func Registration(rnd render.Render, r *http.Request, db *sql.DB) {
@@ -18,9 +18,7 @@ func Registration(rnd render.Render, r *http.Request, db *sql.DB) {
 
 	user.Username = r.FormValue("username")
 	user.Hashpassword, _ = bcrypt.GenerateFromPassword([]byte(r.FormValue("password")), bcrypt.DefaultCost)
-	// if err != nil {
-	// 	log.Print(err)
-	// }
+
 	userID, err := models.InsertUser(user, db)
 	if err != nil {
 		log.Print(err)
@@ -40,6 +38,37 @@ func Registration(rnd render.Render, r *http.Request, db *sql.DB) {
 	profile.UserID = userID
 
 	err = models.InsertProfile(profile, db)
+	if err != nil {
+		log.Print(err)
+	}
+
+	token := utils.GenerateToken()
+
+	err = models.InsertToken(userID, token, db)
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = utils.SendMessage(
+		[]string{profile.Email},
+		"To confirm your registration on pershotravndk.com follow this link https://pershotravndk.herokuapp.com/confirm-email/"+token)
+	if err != nil {
+		log.Print(err)
+	}
+
+	rnd.HTML(200, "regSuccess", nil)
+}
+
+func ConfirmProfile(rnd render.Render, params martini.Params, db *sql.DB) {
+
+	token := params["token"]
+
+	userID, err := models.GetUserIDFromToken(token, db)
+
+	if err != nil {
+		log.Print(err)
+	}
+	err = models.SetAccess(userID, db)
 	if err != nil {
 		log.Print(err)
 	}

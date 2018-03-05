@@ -20,3 +20,12 @@ func InsertUser(user *User, db *sql.DB) (string, error) {
 
 	return userID, nil
 }
+
+func SetAccess(user_id string, db *sql.DB) error {
+	_, err := db.Exec("UPDATE public.\"user\" SET useraccess=$1 WHERE user_id = $2;",
+		1, user_id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
