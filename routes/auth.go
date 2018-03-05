@@ -32,9 +32,6 @@ func Registration(rnd render.Render, r *http.Request, db *sql.DB) {
 	if r.FormValue("mailing") == "on" {
 		profile.Mailing = true
 	}
-	if err != nil {
-		log.Print(err)
-	}
 	profile.UserID = userID
 
 	err = models.InsertProfile(profile, db)
@@ -67,7 +64,19 @@ func ConfirmProfile(rnd render.Render, params martini.Params, db *sql.DB) {
 
 	if err != nil {
 		log.Print(err)
+		rnd.Redirect("/", 404)
+		return
 	}
+
+	access, err := models.GetAccess(userID, db)
+	if err != nil {
+		log.Print(err)
+	}
+	if access != "0" {
+		rnd.Redirect("/")
+		return
+	}
+
 	err = models.SetAccess(userID, db)
 	if err != nil {
 		log.Print(err)

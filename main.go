@@ -5,6 +5,7 @@ import (
 
 	"pershotravndk.com/models"
 	"pershotravndk.com/routes"
+	"pershotravndk.com/utils"
 
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
@@ -18,6 +19,8 @@ func main() {
 	}
 
 	m := martini.Classic()
+
+	utils.TokensMonitor()
 
 	m.Map(db)
 

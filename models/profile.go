@@ -22,3 +22,10 @@ func InsertProfile(profile *Profile, db *sql.DB) error {
 	}
 	return nil
 }
+func DeleteProfile(userID string, db *sql.DB) error {
+	_, err := db.Exec("delete from \"profile\" where user_id = $1", userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

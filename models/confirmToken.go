@@ -29,3 +29,11 @@ func GetUserIDFromToken(token string, db *sql.DB) (string, error) {
 
 	return userID, nil
 }
+
+func DeleteToken(userID string, db *sql.DB) error {
+	_, err := db.Exec("delete from \"confirmation_token\" where user_id = $1", userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
