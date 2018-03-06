@@ -38,7 +38,9 @@ func main() {
 
 	m.Get("/", routes.IndexHandler)
 	m.Get("/signUp", routes.SignUp)
+	m.Get("/signIn", routes.SignIn)
 	m.Post("/registration", routes.Registration)
+	m.Post("/auth", routes.Authorization)
 	m.Get("/confirm-email/:token", routes.ConfirmProfile)
 	m.Run()
 }

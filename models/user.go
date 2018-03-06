@@ -46,3 +46,13 @@ func DeleteUser(userID string, db *sql.DB) error {
 	}
 	return nil
 }
+
+func GetUserByUsername(username string, db *sql.DB) (*User, error) {
+	row := db.QueryRow("select * from \"user\" where username =$1", username)
+	user := new(User)
+	err := row.Scan(&user.UserID, &user.Username, &user.Hashpassword, &user.Access)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}

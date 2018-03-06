@@ -11,3 +11,6 @@ func IndexHandler(rnd render.Render) {
 func SignUp(rnd render.Render) {
 	rnd.HTML(200, "signUp", nil)
 }
+func SignIn(rnd render.Render) {
+	rnd.HTML(200, "signIn", nil)
+}

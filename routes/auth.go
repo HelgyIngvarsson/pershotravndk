@@ -83,3 +83,33 @@ func ConfirmProfile(rnd render.Render, params martini.Params, db *sql.DB) {
 	}
 	rnd.Redirect("/")
 }
+
+func Authorization(rnd render.Render, r *http.Request, db *sql.DB) {
+
+	username := r.FormValue("username")
+	password := r.FormValue("password")
+
+	user, err := models.GetUserByUsername(username, db)
+	if err != nil {
+		log.Print(err)
+		rnd.Redirect("/signIn")
+		return
+	}
+	err = bcrypt.CompareHashAndPassword(user.Hashpassword, []byte(password))
+	if err != nil {
+		rnd.Redirect("/signIn")
+		return
+	}
+	switch user.Access {
+	case 0:
+		{
+			rnd.Redirect("/signIn")
+			return
+		}
+	case 1:
+		{
+			rnd.Redirect("/")
+			return
+		}
+	}
+}
