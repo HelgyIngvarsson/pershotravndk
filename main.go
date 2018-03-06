@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/sessions"
 )
 
 func main() {
@@ -19,6 +20,9 @@ func main() {
 	}
 
 	m := martini.Classic()
+
+	store := sessions.NewCookieStore([]byte("secret01121996"))
+	m.Use(sessions.Sessions("auth_session", store))
 
 	utils.TokensMonitor()
 
@@ -39,6 +43,7 @@ func main() {
 	m.Get("/", routes.IndexHandler)
 	m.Get("/signUp", routes.SignUp)
 	m.Get("/signIn", routes.SignIn)
+	m.Get("/signOut", routes.SignOut)
 	m.Post("/registration", routes.Registration)
 	m.Post("/auth", routes.Authorization)
 	m.Get("/confirm-email/:token", routes.ConfirmProfile)

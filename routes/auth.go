@@ -2,11 +2,13 @@ package routes
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/sessions"
 	"golang.org/x/crypto/bcrypt"
 	"pershotravndk.com/models"
 	"pershotravndk.com/utils"
@@ -84,7 +86,7 @@ func ConfirmProfile(rnd render.Render, params martini.Params, db *sql.DB) {
 	rnd.Redirect("/")
 }
 
-func Authorization(rnd render.Render, r *http.Request, db *sql.DB) {
+func Authorization(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
 
 	username := r.FormValue("username")
 	password := r.FormValue("password")
@@ -92,24 +94,35 @@ func Authorization(rnd render.Render, r *http.Request, db *sql.DB) {
 	user, err := models.GetUserByUsername(username, db)
 	if err != nil {
 		log.Print(err)
+		//неверный логин
 		rnd.Redirect("/signIn")
 		return
 	}
 	err = bcrypt.CompareHashAndPassword(user.Hashpassword, []byte(password))
 	if err != nil {
+		//неверный пароль
 		rnd.Redirect("/signIn")
 		return
 	}
 	switch user.Access {
 	case 0:
 		{
+			//не подтвержден аккаунт
 			rnd.Redirect("/signIn")
 			return
 		}
 	case 1:
 		{
+			//гость
+			session.Set("userID", user.UserID)
+			fmt.Print(session.Get("userID"))
 			rnd.Redirect("/")
 			return
 		}
 	}
+}
+
+func SignOut(rnd render.Render, session sessions.Session) {
+	session.Set("userID", "")
+	rnd.Redirect("/")
 }
