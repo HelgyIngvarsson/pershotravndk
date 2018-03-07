@@ -9,8 +9,13 @@ import (
 	"pershotravndk.com/models"
 )
 
-func IndexHandler(rnd render.Render) {
-	rnd.HTML(200, "index", nil)
+func IndexHandler(rnd render.Render, db *sql.DB) {
+	anonses, err := models.GetAllAnonses(db)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	rnd.HTML(200, "index", anonses)
 }
 
 func SignUp(rnd render.Render) {

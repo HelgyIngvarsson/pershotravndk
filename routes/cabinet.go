@@ -22,3 +22,17 @@ func LeaveFeedback(rnd render.Render, r *http.Request, db *sql.DB, session sessi
 	}
 	rnd.Redirect("/guest")
 }
+
+func PostAnonse(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
+
+	anonse := new(models.Anonse)
+	anonse.AnonseDate = r.FormValue("anonse_date")
+	anonse.Body = r.FormValue("anonse_body")
+	anonse.UserID = session.Get("userID").(string)
+
+	err := models.InsertAnonse(anonse, db)
+	if err != nil {
+		log.Print(err)
+	}
+	rnd.Redirect("/admin")
+}

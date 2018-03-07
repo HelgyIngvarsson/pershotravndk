@@ -49,6 +49,7 @@ func main() {
 	m.Get("/cabinet", routes.Cabinet)
 	m.Post("/registration", routes.Registration)
 	m.Post("/feedback", routes.LeaveFeedback)
+	m.Post("/post-anonse", routes.PostAnonse)
 	m.Post("/auth", routes.Authorization)
 	m.Get("/confirm-email/:token", routes.ConfirmProfile)
 	m.Run()
