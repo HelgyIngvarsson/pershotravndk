@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            Hi, {{.Name}}
+            <h3>Leave a feedback:</h3>
+            <form method="POST" name="feedback"action="/feedback">
+                <div class="form-control">
+                    <label>Your message:</label>
+                    <textarea name="feedback" style="width: 100%; height: 100px"></textarea>
+                </div>
+                <button type="submit">Send</button>
+            </form>
+        </div>        
+        <div class="col-md-2"></div>
+    </div>
+</div>

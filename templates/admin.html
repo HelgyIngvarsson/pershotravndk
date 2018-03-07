@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h2>Admin page</h2>
+            <p>Hi, admin</p>
+            <h4>Last feedbacks:</h4>
+            {{range $key, $value := .Feedbacks}}
+            <p>{{$value.User.Username}} {{$value.Date}}</p>
+            <p>{{$value.Message}}</p>
+            <p>-------------------</p> 
+            {{end}}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>

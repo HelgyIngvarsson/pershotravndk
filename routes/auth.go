@@ -2,7 +2,6 @@ package routes
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -115,8 +114,14 @@ func Authorization(rnd render.Render, r *http.Request, db *sql.DB, session sessi
 		{
 			//гость
 			session.Set("userID", user.UserID)
-			fmt.Print(session.Get("userID"))
-			rnd.Redirect("/")
+			rnd.Redirect("/guest")
+			return
+		}
+	case 2:
+		{
+			//админ
+			session.Set("userID", user.UserID)
+			rnd.Redirect("/admin")
 			return
 		}
 	}

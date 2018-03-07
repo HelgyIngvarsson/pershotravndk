@@ -9,6 +9,7 @@ type Profile struct {
 	Name        string
 	Sername     string
 	Email       string
+	Avatar      string
 	Description string
 	Mailing     bool
 	UserID      string
@@ -28,4 +29,15 @@ func DeleteProfile(userID string, db *sql.DB) error {
 		return err
 	}
 	return nil
+}
+
+func GetProfileByUserID(userID string, db *sql.DB) (*Profile, error) {
+	row := db.QueryRow("Select * from \"profile\" where user_id =$1 ", userID)
+	profile := new(Profile)
+	err := row.Scan(&profile.ProfileID, &profile.Name, &profile.Sername, &profile.Email, &profile.Avatar,
+		&profile.Mailing, &profile.Description, &profile.UserID)
+	if err != nil {
+		return nil, err
+	}
+	return profile, nil
 }

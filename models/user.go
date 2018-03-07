@@ -56,3 +56,12 @@ func GetUserByUsername(username string, db *sql.DB) (*User, error) {
 	}
 	return user, nil
 }
+func GetUserByID(userID string, db *sql.DB) (*User, error) {
+	row := db.QueryRow("select * from \"user\" where user_id =$1", userID)
+	user := new(User)
+	err := row.Scan(&user.UserID, &user.Username, &user.Hashpassword, &user.Access)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
