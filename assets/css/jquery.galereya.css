@@ -22,15 +22,17 @@
     }
 
     .galereya-top {
-        position: fixed;
+        
+        /* position: fixed; */
         top: 0;
         left: 0;
         z-index: 10000;
-        width: 30%;
+        width: 100%;
         height: 50px;
-        margin-left:30%;
-        margin-right:40%;
+        /* margin-left:30%;
+        margin-right:40%; */
         background: transparent;
+        padding-top: 10px;
     }
         /* Gallery category select(begin) */
         .galereya-cats {
