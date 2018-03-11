@@ -9,7 +9,7 @@ type Profile struct {
 	Name        string
 	Sername     string
 	Email       string
-	Avatar      string
+	Avatar      *Image
 	Description string
 	Mailing     bool
 	UserID      string
@@ -34,10 +34,24 @@ func DeleteProfile(userID string, db *sql.DB) error {
 func GetProfileByUserID(userID string, db *sql.DB) (*Profile, error) {
 	row := db.QueryRow("Select * from \"profile\" where user_id =$1 ", userID)
 	profile := new(Profile)
+	profile.Avatar = new(Image)
 	err := row.Scan(&profile.ProfileID, &profile.Name, &profile.Sername, &profile.Email,
-		&profile.Mailing, &profile.Description, &profile.UserID, &profile.Avatar)
+		&profile.Mailing, &profile.Description, &profile.UserID, &profile.Avatar.ImageID)
+	if err != nil {
+		return nil, err
+	}
+	profile.Avatar, err = GetImageByID(profile.Avatar.ImageID, db)
 	if err != nil {
 		return nil, err
 	}
 	return profile, nil
+}
+func GetNameByUserID(userID string, db *sql.DB) (string, error) {
+	row := db.QueryRow("Select name,sername from \"profile\" where user_id =$1 ", userID)
+	var name, sername string
+	err := row.Scan(&name, &sername)
+	if err != nil {
+		return "Anon", err
+	}
+	return sername + " " + name, nil
 }

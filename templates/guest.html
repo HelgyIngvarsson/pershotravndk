@@ -1,8 +1,29 @@
 <div class="container">
+        <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <h1>Guest cabinet</h1>
+                    <hr></hr>
+                </div>
+                <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    <img src="{{.Profile.Avatar.Path}}">
+                </div>
+                <div class="col-md-5">
+                    <h3>Welcome</h3>
+                    <p>{{.User.Username}}</p>
+                    <p>{{.Profile.Name}}</p>
+                    <p>{{.Profile.Sername}}</p>
+                </div>
+                <div class="col-md-2"></div>
+        </div>
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            Hi, {{.Name}}
+            <hr></hr>
             <h3>Leave a feedback:</h3>
             <form method="POST" name="feedback"action="/feedback">
                 <div class="form-control">

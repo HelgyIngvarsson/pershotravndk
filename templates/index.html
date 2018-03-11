@@ -1,9 +1,22 @@
 <div class="container">
     <div class="row">
         <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <h2>Anonses:</h2>         
-            {{range $key, $value := .}}
+        <div class="col-md-5">
+            <h2>Articles:</h2>         
+            <hr></hr>
+            {{range $key, $value := .Articles}}
+            <img src="{{$value.Image.Path}}">
+            <p>{{$value.Title}}</p>
+            <p>{{$value.Body}}</p>
+            <p>{{$value.Name}}</p>
+            <p>{{$value.Date}}</p>
+            <hr></hr>
+            {{end}}
+        </div>
+        <div class="col-md-3">
+            <h2>Anonses:</h2>    
+            <hr></hr>     
+            {{range $key, $value := .Anonses}}
             <p>{{$value.AnonseDate}}</p>
             <p>{{$value.Body}}</p>
             <hr></hr>

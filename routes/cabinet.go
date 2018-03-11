@@ -36,3 +36,19 @@ func PostAnonse(rnd render.Render, r *http.Request, db *sql.DB, session sessions
 	}
 	rnd.Redirect("/admin")
 }
+
+func PostArticle(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
+
+	article := new(models.Article)
+	article.Title = r.FormValue("article_title")
+	article.Body = r.FormValue("article_body")
+	article.UserID = session.Get("userID").(string)
+	article.Image = new(models.Image)
+	article.Image.ImageID = "1"
+
+	err := models.InsertArticle(article, db)
+	if err != nil {
+		log.Print(err)
+	}
+	rnd.Redirect("/admin")
+}

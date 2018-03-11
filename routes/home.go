@@ -15,7 +15,15 @@ func IndexHandler(rnd render.Render, db *sql.DB) {
 		log.Print(err)
 		return
 	}
-	rnd.HTML(200, "index", anonses)
+	articles, err := models.GetAllArticles(db)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	rnd.HTML(200, "index", map[string]interface{}{
+		"Anonses":  anonses,
+		"Articles": articles,
+	})
 }
 
 func SignUp(rnd render.Render) {
@@ -41,7 +49,9 @@ func GuestCabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
 			log.Print(err)
 			return
 		}
-		rnd.HTML(200, "guest", profile)
+		rnd.HTML(200, "guest", map[string]interface{}{
+			"Profile": profile,
+			"User":    user})
 	} else {
 		rnd.Redirect("/")
 		return
@@ -73,7 +83,8 @@ func AdminCabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
 		}
 		rnd.HTML(200, "admin", map[string]interface{}{
 			"Profile":   profile,
-			"Feedbacks": feedbacks})
+			"Feedbacks": feedbacks,
+			"User":      user})
 	} else {
 		rnd.Redirect("/")
 		return

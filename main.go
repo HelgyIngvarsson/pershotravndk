@@ -38,7 +38,9 @@ func main() {
 	}))
 
 	staticOptionsAssets := martini.StaticOptions{Prefix: "assets"}
+	staticOptionsResources := martini.StaticOptions{Prefix: "resources"}
 	m.Use(martini.Static("assets", staticOptionsAssets))
+	m.Use(martini.Static("resources", staticOptionsResources))
 
 	m.Get("/", routes.IndexHandler)
 	m.Get("/signUp", routes.SignUp)
@@ -50,6 +52,7 @@ func main() {
 	m.Post("/registration", routes.Registration)
 	m.Post("/feedback", routes.LeaveFeedback)
 	m.Post("/post-anonse", routes.PostAnonse)
+	m.Post("/post-article", routes.PostArticle)
 	m.Post("/auth", routes.Authorization)
 	m.Get("/confirm-email/:token", routes.ConfirmProfile)
 	m.Run()
