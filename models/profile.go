@@ -34,8 +34,8 @@ func DeleteProfile(userID string, db *sql.DB) error {
 func GetProfileByUserID(userID string, db *sql.DB) (*Profile, error) {
 	row := db.QueryRow("Select * from \"profile\" where user_id =$1 ", userID)
 	profile := new(Profile)
-	err := row.Scan(&profile.ProfileID, &profile.Name, &profile.Sername, &profile.Email, &profile.Avatar,
-		&profile.Mailing, &profile.Description, &profile.UserID)
+	err := row.Scan(&profile.ProfileID, &profile.Name, &profile.Sername, &profile.Email,
+		&profile.Mailing, &profile.Description, &profile.UserID, &profile.Avatar)
 	if err != nil {
 		return nil, err
 	}
