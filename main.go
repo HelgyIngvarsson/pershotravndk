@@ -49,6 +49,8 @@ func main() {
 	m.Get("/guest", routes.GuestCabinet)
 	m.Get("/admin", routes.AdminCabinet)
 	m.Get("/cabinet", routes.Cabinet)
+	m.Get("/confirmation", routes.Confirm)
+	m.Get("/gallery", routes.Gallery)
 	m.Post("/registration", routes.Registration)
 	m.Post("/feedback", routes.LeaveFeedback)
 	m.Post("/post-anonse", routes.PostAnonse)

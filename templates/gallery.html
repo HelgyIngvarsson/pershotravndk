@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="../assets/css/jquery.galereya.css">
+<div id="gal1" style="padding-top: 20px">
+        {{range $i, $al := .}}
+            {{range $key, $value :=$al.Images}}
+            <img src="{{$value.Path}}"
+            alt="{{$al.Description}}"
+            title="{{$al.Title}}"
+            data-desc="{{$al.Description}}"
+            data-category="{{$al.Title}}"
+            data-fullsrc="{{$value.Path}}"
+            />
+            {{end}}
+        {{end}}
+        </div>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="../assets/js/jquery.galereya.min.js"></script>
+        <script src="../assets/js/jquery.galereya.js "></script>
+<script>  $('#gal1').galereya();</script>

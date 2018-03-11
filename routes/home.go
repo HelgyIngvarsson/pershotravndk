@@ -26,6 +26,19 @@ func IndexHandler(rnd render.Render, db *sql.DB) {
 	})
 }
 
+func Gallery(rnd render.Render, db *sql.DB) {
+	albums, err := models.GetAlbums(db)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	rnd.HTML(200, "gallery", albums)
+}
+
+func Confirm(rnd render.Render) {
+	rnd.HTML(200, "confirmation", nil)
+}
+
 func SignUp(rnd render.Render) {
 	rnd.HTML(200, "signUp", nil)
 }

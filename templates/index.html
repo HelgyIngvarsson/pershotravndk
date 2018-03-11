@@ -6,7 +6,7 @@
             <hr></hr>
             {{range $key, $value := .Articles}}
             <img src="{{$value.Image.Path}}">
-            <p>{{$value.Title}}</p>
+            <h3>{{$value.Title}}</h3>
             <p>{{$value.Body}}</p>
             <p>{{$value.Name}}</p>
             <p>{{$value.Date}}</p>

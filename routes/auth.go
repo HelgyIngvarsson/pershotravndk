@@ -82,7 +82,7 @@ func ConfirmProfile(rnd render.Render, params martini.Params, db *sql.DB) {
 	if err != nil {
 		log.Print(err)
 	}
-	rnd.Redirect("/")
+	rnd.Redirect("/confirmation")
 }
 
 func Authorization(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
