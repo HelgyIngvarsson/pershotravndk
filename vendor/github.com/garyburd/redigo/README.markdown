@@ -6,6 +6,10 @@ Redigo
 
 Redigo is a [Go](http://golang.org/) client for the [Redis](http://redis.io/) database.
 
+Future development of Redigo is at
+[github.com/gomodule/redigo](https://github.com/gomodule/redigo). Please submit
+issues at gomodule/redigo.
+
 Features
 -------
 
