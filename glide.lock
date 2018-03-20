@@ -1,5 +1,5 @@
 hash: d4a44ebce37d3ebb77226aeb1c79e45badad59c6f72cb0dd3d69087d474962a1
-updated: 2018-03-20T17:32:11.5465853+02:00
+updated: 2018-03-20T17:36:04.1708907+02:00
 imports:
 - name: github.com/boj/redistore
   version: 4562487a4bee9a7c272b72bfaeda4917d0a47ab9
