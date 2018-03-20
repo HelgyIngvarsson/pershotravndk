@@ -1,5 +1,5 @@
 hash: d4a44ebce37d3ebb77226aeb1c79e45badad59c6f72cb0dd3d69087d474962a1
-updated: 2018-03-20T12:58:35.9736683+02:00
+updated: 2018-03-20T17:32:11.5465853+02:00
 imports:
 - name: github.com/boj/redistore
   version: 4562487a4bee9a7c272b72bfaeda4917d0a47ab9
@@ -8,7 +8,7 @@ imports:
 - name: github.com/codegangsta/martini
   version: 22fa46961aabd2665cf3f1343b146d20028f5071
 - name: github.com/garyburd/redigo
-  version: 0b5cd0856798cbbcbd01e8240333e9eeadd337b9
+  version: e8e59ed1cd89662b75af5d1109e39e5dc148cc00
   subpackages:
   - internal
   - redis

@@ -8,7 +8,8 @@ Redigo is a [Go](http://golang.org/) client for the [Redis](http://redis.io/) da
 
 Future development of Redigo is at
 [github.com/gomodule/redigo](https://github.com/gomodule/redigo). Please submit
-issues at gomodule/redigo.
+issues at gomodule/redigo. The repository at github.com/garyburd/redigo will no
+longer be maintained.
 
 Features
 -------
