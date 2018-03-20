@@ -3,6 +3,7 @@ package routes
 import (
 	"database/sql"
 	"log"
+	"net/http"
 
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
@@ -140,10 +141,31 @@ func GetArticle(rnd render.Render, params martini.Params, db *sql.DB) {
 	article := new(models.Article)
 	article.ArticleID = params["id"]
 	article, err := models.GetArticleByID(article.ArticleID, db)
-
 	if err != nil {
 		log.Print(err)
 		rnd.HTML(404, "/", nil)
 	}
-	rnd.HTML(200, "article", article)
+	comments, err := models.GetCommentsByArticleID(article.ArticleID, db)
+	if err != nil {
+		log.Print(err)
+		rnd.HTML(404, "/", nil)
+	}
+	rnd.HTML(200, "article", map[string]interface{}{
+		"Article":  article,
+		"Comments": comments})
+}
+
+func AddComment(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
+
+	comment := new(models.Comment)
+	comment.UserID = session.Get("userID").(string)
+	comment.ArticleID = r.FormValue("article_id")
+	comment.Body = r.FormValue("comment_body")
+
+	err := models.InsertComment(comment, db)
+	if err != nil {
+		log.Print(err)
+		rnd.Redirect("/article/" + comment.ArticleID)
+	}
+	rnd.Redirect("/article/" + comment.ArticleID)
 }
