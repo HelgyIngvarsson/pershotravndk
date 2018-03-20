@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 	"pershotravndk.com/models"
@@ -132,4 +133,17 @@ func Cabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
 			return
 		}
 	}
+}
+
+func GetArticle(rnd render.Render, params martini.Params, db *sql.DB) {
+
+	article := new(models.Article)
+	article.ArticleID = params["id"]
+	article, err := models.GetArticleByID(article.ArticleID, db)
+
+	if err != nil {
+		log.Print(err)
+		rnd.HTML(404, "/", nil)
+	}
+	rnd.HTML(200, "article", article)
 }

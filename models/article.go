@@ -48,3 +48,19 @@ func GetAllArticles(db *sql.DB) ([]*Article, error) {
 	}
 	return articles, nil
 }
+
+func GetArticleByID(id string, db *sql.DB) (*Article, error) {
+	row := db.QueryRow("Select * from article where article_id=$1", id)
+	article := new(Article)
+	article.Image = new(Image)
+	err := row.Scan(&article.ArticleID, &article.Title, &article.Body, &article.UserID, &article.Image.ImageID, &article.Date)
+	if err != nil {
+		return nil, err
+	}
+	article.Name, _ = GetNameByUserID(article.UserID, db)
+	article.Image, err = GetImageByID(article.Image.ImageID, db)
+	if err != nil {
+		return nil, err
+	}
+	return article, nil
+}

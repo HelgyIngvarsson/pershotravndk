@@ -6,8 +6,8 @@
             <hr></hr>
             {{range $key, $value := .Articles}}
             <img src="{{$value.Image.Path}}">
-            <h3>{{$value.Title}}</h3>
-            <p>{{$value.Body}}</p>
+            <h3 class="text-uppercase"><a href="/article/{{$value.ArticleID}}">{{$value.Title}}</a></h3>
+            <p class="short-article-body">{{$value.Body}}</p>
             <p>{{$value.Name}}</p>
             <p>{{$value.Date}}</p>
             <hr></hr>

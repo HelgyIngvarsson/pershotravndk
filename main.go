@@ -57,5 +57,6 @@ func main() {
 	m.Post("/post-article", routes.PostArticle)
 	m.Post("/auth", routes.Authorization)
 	m.Get("/confirm-email/:token", routes.ConfirmProfile)
+	m.Get("/article/:id", routes.GetArticle)
 	m.Run()
 }
