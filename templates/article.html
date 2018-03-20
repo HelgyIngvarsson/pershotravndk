@@ -1,4 +1,5 @@
 <div class="container">
+        <script src="../assets/js/comment.js"></script>
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -9,13 +10,8 @@
             <p class="text-capitalize">-{{.Article.Name}}</p>
             <hr></hr>
             <h2>Comments:</h2>
-            <form method="post" action="/add-comment" name="add-comment">
-                <div class="form-control">
-                    <label>Comment</label>
-                    <textarea name="comment_body" style="width: 100%; height: 60px;"></textarea>
-                    <input type="hidden" name="article_id" value="{{.Article.ArticleID}}">
-                </div>
-                <button type="submit">Post</button> 
+            <form method="post" action="/add-comment" name="add-comment" id="comment_form">
+            <script>comentCheck()</script>
             </form>
             <hr></hr>
             {{range $i, $val := .Comments}}
