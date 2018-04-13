@@ -5,9 +5,9 @@ import (
 )
 
 type Image struct {
-	ImageID string
-	Path    string
-	Album   string
+	ImageID string `json:"id,omitempty"`
+	Path    string `json:"path,omitempty"`
+	Album   string `json:"album_id,omitempty"`
 }
 
 func GetImageByID(imageID string, db *sql.DB) (*Image, error) {

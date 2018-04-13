@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"pershotravndk.com/models"
 	"pershotravndk.com/routes"
@@ -29,35 +31,45 @@ func main() {
 	m.Map(db)
 
 	m.Use(render.Renderer(render.Options{
-		Directory:  "templates",                // Specify what path to load the templates from.
-		Layout:     "layout",                   // Specify a layout template. Layouts can call {{ yield }} to render the current template.
-		Extensions: []string{".tmpl", ".html"}, // Specify extensions to load for templates.
-		Charset:    "UTF-8",                    // Sets encoding for json and html content-types. Default is "UTF-8".
-		IndentJSON: true,                       // Output human readable JSON
-		IndentXML:  true,                       // Output human readable XML
+		Charset:    "UTF-8", // Sets encoding for json and html content-types. Default is "UTF-8".
+		IndentJSON: true,    // Output human readable JSON
+		IndentXML:  true,    // Output human readable XML
 	}))
 
-	staticOptionsAssets := martini.StaticOptions{Prefix: "assets"}
-	staticOptionsResources := martini.StaticOptions{Prefix: "resources"}
-	m.Use(martini.Static("assets", staticOptionsAssets))
-	m.Use(martini.Static("resources", staticOptionsResources))
+	m.Get("/api/getArticles", routes.GetArticles)
+	m.Get("/api/getAnonses", routes.GetAnonses)
+	// m.Get("/api/login", routes.LogIn)
 
-	m.Get("/", routes.IndexHandler)
-	m.Get("/signUp", routes.SignUp)
-	m.Get("/signIn", routes.SignIn)
-	m.Get("/signOut", routes.SignOut)
-	m.Get("/guest", routes.GuestCabinet)
-	m.Get("/admin", routes.AdminCabinet)
-	m.Get("/cabinet", routes.Cabinet)
-	m.Get("/confirmation", routes.Confirm)
-	m.Get("/gallery", routes.Gallery)
-	m.Post("/registration", routes.Registration)
-	m.Post("/feedback", routes.LeaveFeedback)
-	m.Post("/post-anonse", routes.PostAnonse)
-	m.Post("/post-article", routes.PostArticle)
-	m.Post("/auth", routes.Authorization)
-	m.Post("/add-comment", routes.AddComment)
-	m.Get("/confirm-email/:token", routes.ConfirmProfile)
-	m.Get("/article/:id", routes.GetArticle)
-	m.Run()
+	// m.Get("/", routes.IndexHandler)
+	// m.Get("/signUp", routes.SignUp)
+	// m.Get("/signIn", routes.SignIn)
+	// m.Get("/signOut", routes.SignOut)
+	// m.Get("/guest", routes.GuestCabinet)
+	// m.Get("/admin", routes.AdminCabinet)
+	// m.Get("/cabinet", routes.Cabinet)
+	// m.Get("/confirmation", routes.Confirm)
+	// m.Get("/gallery", routes.Gallery)
+	// m.Post("/registration", routes.Registration)
+	// m.Post("/feedback", routes.LeaveFeedback)
+	// m.Post("/post-anonse", routes.PostAnonse)
+	// m.Post("/post-article", routes.PostArticle)
+	// m.Post("/auth", routes.Authorization)
+	// m.Post("/add-comment", routes.AddComment)
+	// m.Get("/confirm-email/:token", routes.ConfirmProfile)
+	// m.Get("/article/:id", routes.GetArticle)
+	port, err := determineListenAddress()
+	if err != nil {
+		m.Run() //run on default port
+	} else {
+		m.RunOnAddr(port) //run on determine port
+	}
+}
+
+//function checking environment variable PORT
+func determineListenAddress() (string, error) {
+	port := os.Getenv("PORT")
+	if port == "" {
+		return "", fmt.Errorf("$PORT not set")
+	}
+	return ":" + port, nil
 }

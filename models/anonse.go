@@ -5,11 +5,11 @@ import (
 )
 
 type Anonse struct {
-	AnonseID   string
-	Body       string
-	PostDate   string
-	AnonseDate string
-	UserID     string
+	AnonseID   string `json:"id,omitempty"`
+	Body       string `json:"body,omitempty"`
+	PostDate   string `json:"post_date,omitempty"`
+	AnonseDate string `json:"anonse_date,omitempty"`
+	UserID     string `json:"user_id,omitempty"`
 }
 
 func InsertAnonse(anonse *Anonse, db *sql.DB) error {

@@ -11,6 +11,24 @@ import (
 	"pershotravndk.com/models"
 )
 
+func GetArticles(rnd render.Render, db *sql.DB) {
+	articles, err := models.GetAllArticles(db)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	rnd.JSON(200, map[string]interface{}{"articles": articles})
+}
+
+func GetAnonses(rnd render.Render, db *sql.DB, session sessions.Session) {
+	anonses, err := models.GetAllAnonses(db)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	rnd.JSON(200, map[string]interface{}{"anonses": anonses})
+}
+
 func IndexHandler(rnd render.Render, db *sql.DB) {
 	anonses, err := models.GetAllAnonses(db)
 	if err != nil {

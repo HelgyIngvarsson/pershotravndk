@@ -5,13 +5,13 @@ import (
 )
 
 type Article struct {
-	ArticleID string
-	Title     string
-	Body      string
-	UserID    string
-	Name      string
+	ArticleID string `json:"id,omitempty"`
+	Title     string `json:"title,omitempty"`
+	Body      string `json:"body,omitempty"`
+	UserID    string `json:"user_id,omitempty"`
+	Name      string `json:"name,omitempty"`
 	Image     *Image
-	Date      string
+	Date      string `json:"date,omitempty"`
 }
 
 func InsertArticle(article *Article, db *sql.DB) error {
