@@ -9,6 +9,7 @@ import (
 	"pershotravndk.com/routes"
 	"pershotravndk.com/utils"
 
+	"github.com/codegangsta/martini-contrib/cors"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
@@ -34,6 +35,14 @@ func main() {
 		Charset:    "UTF-8", // Sets encoding for json and html content-types. Default is "UTF-8".
 		IndentJSON: true,    // Output human readable JSON
 		IndentXML:  true,    // Output human readable XML
+	}))
+
+	m.Use(cors.Allow(&cors.Options{
+		AllowOrigins:     []string{"https://pershotravndk.herokuapp.com/*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
 	}))
 
 	m.Get("/api/getArticles", routes.GetArticles)

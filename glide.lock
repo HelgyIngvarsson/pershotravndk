@@ -1,5 +1,5 @@
 hash: d4a44ebce37d3ebb77226aeb1c79e45badad59c6f72cb0dd3d69087d474962a1
-updated: 2018-04-13T17:04:50.5421738+03:00
+updated: 2018-04-13T17:26:59.9242101+03:00
 imports:
 - name: github.com/boj/redistore
   version: 4562487a4bee9a7c272b72bfaeda4917d0a47ab9
@@ -7,6 +7,10 @@ imports:
   version: 33e0aa1cb7c019ccc3fbe049a8262a6403d30504
 - name: github.com/codegangsta/martini
   version: 22fa46961aabd2665cf3f1343b146d20028f5071
+- name: github.com/codegangsta/martini-contrib
+  version: 8ce6181c2609699e4c7cd30994b76a850a9cdadc
+  subpackages:
+  - cors
 - name: github.com/garyburd/redigo
   version: 569eae59ada904ea8db7a225c2b47165af08735a
   subpackages:
