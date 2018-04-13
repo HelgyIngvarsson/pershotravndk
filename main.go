@@ -38,7 +38,7 @@ func main() {
 	}))
 
 	m.Use(cors.Allow(&cors.Options{
-		AllowOrigins:     []string{"https://pershotravndk.herokuapp.com"},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
