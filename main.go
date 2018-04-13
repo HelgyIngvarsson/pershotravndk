@@ -38,7 +38,7 @@ func main() {
 	}))
 
 	m.Use(cors.Allow(&cors.Options{
-		AllowOrigins:     []string{"https://*"},
+		AllowOrigins:     []string{"https://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
