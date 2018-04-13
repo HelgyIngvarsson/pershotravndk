@@ -39,7 +39,7 @@ func main() {
 
 	m.Use(cors.Allow(&cors.Options{
 		AllowOrigins:     []string{"http://localhost:3000", "https://infinite-coast-51488.herokuapp.com"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH"},
+		AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
@@ -47,7 +47,8 @@ func main() {
 
 	m.Get("/api/getArticles", routes.GetArticles)
 	m.Get("/api/getAnonses", routes.GetAnonses)
-	// m.Get("/api/login", routes.LogIn)
+	m.Options("/**", routes.RespOptions)
+	m.Post("/api/login", routes.LogIn)
 
 	// m.Get("/", routes.IndexHandler)
 	// m.Get("/signUp", routes.SignUp)
@@ -72,6 +73,7 @@ func main() {
 	} else {
 		m.RunOnAddr(port) //run on determine port
 	}
+	// m.RunOnAddr(":8000")
 }
 
 //function checking environment variable PORT

@@ -2,6 +2,9 @@ package routes
 
 import (
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -12,6 +15,53 @@ import (
 	"pershotravndk.com/models"
 	"pershotravndk.com/utils"
 )
+
+type authMessage struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func RespOptions(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	setupResponse(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+}
+func LogIn(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var authUser authMessage
+	err = json.Unmarshal(b, &authUser)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	user, err := models.GetUserByUsername(authUser.Username, db)
+	if err != nil {
+		log.Print(err)
+		//неверный логин
+		rnd.JSON(200, map[string]interface{}{"logged": false})
+		return
+	}
+	err = bcrypt.CompareHashAndPassword(user.Hashpassword, []byte(authUser.Password))
+	if err != nil {
+		log.Print(err)
+		//неверный пароль
+		rnd.JSON(200, map[string]interface{}{"logged": false})
+		return
+	}
+	fmt.Printf("%s", b)
+	rnd.JSON(200, map[string]interface{}{"logged": true})
+
+}
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
 
 func Registration(rnd render.Render, r *http.Request, db *sql.DB) {
 
