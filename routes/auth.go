@@ -42,18 +42,18 @@ func LogIn(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB
 	if err != nil {
 		log.Print(err)
 		//неверный логин
-		rnd.JSON(200, map[string]interface{}{"logged": false})
+		rnd.JSON(200, map[string]interface{}{"userID": ""})
 		return
 	}
 	err = bcrypt.CompareHashAndPassword(user.Hashpassword, []byte(authUser.Password))
 	if err != nil {
 		log.Print(err)
 		//неверный пароль
-		rnd.JSON(200, map[string]interface{}{"logged": false})
+		rnd.JSON(200, map[string]interface{}{"userID": ""})
 		return
 	}
 	fmt.Printf("%s", b)
-	rnd.JSON(200, map[string]interface{}{"logged": true})
+	rnd.JSON(200, map[string]interface{}{"userID": user.UserID})
 
 }
 
