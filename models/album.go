@@ -6,10 +6,10 @@ import (
 )
 
 type Album struct {
-	AlbumID     string
-	Title       string
-	Description string
-	Images      []*Image
+	AlbumID     string   `json:"id,omitempty"`
+	Title       string   `json:"title,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Images      []*Image `json:"images,omitempty"`
 }
 
 func GetAlbums(db *sql.DB) ([]*Album, error) {

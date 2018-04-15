@@ -49,6 +49,8 @@ func main() {
 	m.Get("/api/getAnonses", routes.GetAnonses)
 	m.Options("/**", routes.RespOptions)
 	m.Post("/api/login", routes.LogIn)
+	m.Get("/api/getAlbums", routes.GetAlbums)
+	m.Get("/api/getAdmins", routes.GetAdmins)
 
 	// m.Get("/", routes.IndexHandler)
 	// m.Get("/signUp", routes.SignUp)

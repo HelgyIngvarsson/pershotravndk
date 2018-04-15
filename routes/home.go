@@ -29,32 +29,22 @@ func GetAnonses(rnd render.Render, db *sql.DB, session sessions.Session) {
 	rnd.JSON(200, map[string]interface{}{"anonses": anonses})
 }
 
-func IndexHandler(rnd render.Render, db *sql.DB) {
-	anonses, err := models.GetAllAnonses(db)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-	articles, err := models.GetAllArticles(db)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-	rnd.HTML(200, "index", map[string]interface{}{
-		"Anonses":  anonses,
-		"Articles": articles,
-	})
-}
-
-func Gallery(rnd render.Render, db *sql.DB) {
+func GetAlbums(rnd render.Render, db *sql.DB) {
 	albums, err := models.GetAlbums(db)
 	if err != nil {
 		log.Print(err)
 		return
 	}
-	rnd.HTML(200, "gallery", albums)
+	rnd.JSON(200, map[string]interface{}{"albums": albums})
 }
-
+func GetAdmins(rnd render.Render, db *sql.DB) {
+	admins, err := models.GetAdminsProfile(db)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	rnd.JSON(200, map[string]interface{}{"admins": admins})
+}
 func Confirm(rnd render.Render) {
 	rnd.HTML(200, "confirmation", nil)
 }

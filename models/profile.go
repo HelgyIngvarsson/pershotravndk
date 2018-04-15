@@ -5,14 +5,14 @@ import (
 )
 
 type Profile struct {
-	ProfileID   string
-	Name        string
-	Sername     string
-	Email       string
-	Avatar      *Image
-	Description string
-	Mailing     bool
-	UserID      string
+	ProfileID   string `json:"id,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Sername     string `json:"sername,omitempty"`
+	Email       string `json:"email,omitempty"`
+	Avatar      *Image `json:"image,omitempty"`
+	Description string `json:"desc,omitempty"`
+	Mailing     bool   `json:"mailing,omitempty"`
+	UserID      string `json:"user_id,omitempty"`
 }
 
 func InsertProfile(profile *Profile, db *sql.DB) error {
@@ -45,6 +45,33 @@ func GetProfileByUserID(userID string, db *sql.DB) (*Profile, error) {
 		return nil, err
 	}
 	return profile, nil
+}
+func GetAdminsProfile(db *sql.DB) ([]*Profile, error) {
+	rows, err := db.Query("SELECT \"profile\".* from \"profile\",\"user\" where \"profile\".user_id =\"user\".user_id and \"user\".useraccess=1")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	profiles := make([]*Profile, 0)
+	for rows.Next() {
+		profile := new(Profile)
+		profile.Avatar = new(Image)
+		err := rows.Scan(&profile.ProfileID, &profile.Name, &profile.Sername, &profile.Email,
+			&profile.Mailing, &profile.Description, &profile.UserID, &profile.Avatar.ImageID)
+		if err != nil {
+			return nil, err
+		}
+		profile.Avatar, err = GetImageByID(profile.Avatar.ImageID, db)
+		if err != nil {
+			return nil, err
+		}
+		profiles = append(profiles, profile)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return profiles, nil
 }
 func GetNameByUserID(userID string, db *sql.DB) (string, error) {
 	row := db.QueryRow("Select name,sername from \"profile\" where user_id =$1 ", userID)

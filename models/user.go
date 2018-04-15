@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
-	UserID       string
-	Username     string
-	Hashpassword []byte
-	Access       int
+	UserID       string `json:"id,omitempty"`
+	Username     string `json:"username,omitempty"`
+	Hashpassword []byte `json:"-"`
+	Access       int    `json:"access,omitempty"`
 }
 
 func InsertUser(user *User, db *sql.DB) (string, error) {
