@@ -2,10 +2,11 @@ package routes
 
 import (
 	"database/sql"
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
-	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 	"pershotravndk.com/models"
@@ -45,6 +46,36 @@ func GetAdmins(rnd render.Render, db *sql.DB) {
 	}
 	rnd.JSON(200, map[string]interface{}{"admins": admins})
 }
+
+func GetArticle(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	type Msg struct {
+		ID string `json:"id"`
+	}
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var id Msg
+	err = json.Unmarshal(b, &id)
+	if err != nil {
+		log.Print(err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	article := new(models.Article)
+	article.ArticleID = id.ID
+	article, err = models.GetArticleByID(article.ArticleID, db)
+	if err != nil {
+		log.Print(err)
+		rnd.JSON(200, map[string]interface{}{"article": nil})
+	}
+	comments, err := models.GetCommentsByArticleID(article.ArticleID, db)
+	if err != nil {
+		log.Print(err)
+	}
+	rnd.JSON(200, map[string]interface{}{"article": article, "comments": comments})
+}
+
 func Confirm(rnd render.Render) {
 	rnd.HTML(200, "confirmation", nil)
 }
@@ -142,25 +173,6 @@ func Cabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
 			return
 		}
 	}
-}
-
-func GetArticle(rnd render.Render, params martini.Params, db *sql.DB) {
-
-	article := new(models.Article)
-	article.ArticleID = params["id"]
-	article, err := models.GetArticleByID(article.ArticleID, db)
-	if err != nil {
-		log.Print(err)
-		rnd.HTML(404, "/", nil)
-	}
-	comments, err := models.GetCommentsByArticleID(article.ArticleID, db)
-	if err != nil {
-		log.Print(err)
-		rnd.HTML(404, "/", nil)
-	}
-	rnd.HTML(200, "article", map[string]interface{}{
-		"Article":  article,
-		"Comments": comments})
 }
 
 func AddComment(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {

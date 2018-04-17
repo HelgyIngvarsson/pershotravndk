@@ -5,12 +5,12 @@ import (
 )
 
 type Comment struct {
-	CommentID string
-	UserID    string
-	Profile   *Profile
-	ArticleID string
-	Body      string
-	Date      string
+	CommentID string   `json:"id,omitempty"`
+	UserID    string   `json:"user_id,omitempty"`
+	Profile   *Profile `json:"profile,omitempty"`
+	ArticleID string   `json:"article_id,omitempty"`
+	Body      string   `json:"body,omitempty"`
+	Date      string   `json:"date,omitempty"`
 }
 
 func InsertComment(comment *Comment, db *sql.DB) error {

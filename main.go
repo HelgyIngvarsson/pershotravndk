@@ -51,7 +51,7 @@ func main() {
 	m.Post("/api/login", routes.LogIn)
 	m.Get("/api/getAlbums", routes.GetAlbums)
 	m.Get("/api/getAdmins", routes.GetAdmins)
-
+	m.Post("/api/getArticle", routes.GetArticle)
 	// m.Get("/", routes.IndexHandler)
 	// m.Get("/signUp", routes.SignUp)
 	// m.Get("/signIn", routes.SignIn)
