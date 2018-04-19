@@ -38,7 +38,7 @@ func main() {
 	}))
 
 	m.Use(cors.Allow(&cors.Options{
-		AllowOrigins:     []string{"http://localhost:3000", "https://infinite-coast-51488.herokuapp.com"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://pershotravndk.herokuapp.com"},
 		AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "PATCH"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
