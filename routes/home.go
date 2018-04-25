@@ -2,11 +2,10 @@ package routes
 
 import (
 	"database/sql"
-	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 
+	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
 	"pershotravndk.com/models"
@@ -47,24 +46,11 @@ func GetAdmins(rnd render.Render, db *sql.DB) {
 	rnd.JSON(200, map[string]interface{}{"admins": admins})
 }
 
-func GetArticle(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	type Msg struct {
-		ID string `json:"id"`
-	}
-	b, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		panic(err)
-	}
-	var id Msg
-	err = json.Unmarshal(b, &id)
-	if err != nil {
-		log.Print(err)
-		http.Error(w, err.Error(), 500)
-		return
-	}
+func GetArticle(rnd render.Render, params martini.Params, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	id := params["id"]
 	article := new(models.Article)
-	article.ArticleID = id.ID
-	article, err = models.GetArticleByID(article.ArticleID, db)
+	article.ArticleID = id
+	article, err := models.GetArticleByID(article.ArticleID, db)
 	if err != nil {
 		log.Print(err)
 		rnd.JSON(200, map[string]interface{}{"article": nil})

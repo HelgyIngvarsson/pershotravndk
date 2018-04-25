@@ -29,7 +29,10 @@ func main() {
 
 	utils.TokensMonitor()
 
+	var SigningKey = []byte("supersecret")
+
 	m.Map(db)
+	m.Map(SigningKey)
 
 	m.Use(render.Renderer(render.Options{
 		Charset:    "UTF-8", // Sets encoding for json and html content-types. Default is "UTF-8".
@@ -51,17 +54,8 @@ func main() {
 	m.Post("/api/login", routes.LogIn)
 	m.Get("/api/getAlbums", routes.GetAlbums)
 	m.Get("/api/getAdmins", routes.GetAdmins)
-	m.Post("/api/getArticle", routes.GetArticle)
-	// m.Get("/", routes.IndexHandler)
-	// m.Get("/signUp", routes.SignUp)
-	// m.Get("/signIn", routes.SignIn)
-	// m.Get("/signOut", routes.SignOut)
-	// m.Get("/guest", routes.GuestCabinet)
-	// m.Get("/admin", routes.AdminCabinet)
-	// m.Get("/cabinet", routes.Cabinet)
-	// m.Get("/confirmation", routes.Confirm)
-	// m.Get("/gallery", routes.Gallery)
-	// m.Post("/registration", routes.Registration)
+	m.Get("/api/getArticle/:id", routes.GetArticle)
+	m.Post("/api/registration", routes.Registration)
 	// m.Post("/feedback", routes.LeaveFeedback)
 	// m.Post("/post-anonse", routes.PostAnonse)
 	// m.Post("/post-article", routes.PostArticle)
