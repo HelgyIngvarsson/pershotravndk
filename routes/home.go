@@ -46,6 +46,15 @@ func GetAdmins(rnd render.Render, db *sql.DB) {
 	rnd.JSON(200, map[string]interface{}{"admins": admins})
 }
 
+func GetProfile(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	userID := r.Header.Get("userID")
+	profile, err := models.GetProfileByUserID(userID, db)
+	if err != nil {
+		rnd.Error(404)
+	}
+	rnd.JSON(200, map[string]interface{}{"profile": profile})
+}
+
 func GetArticle(rnd render.Render, params martini.Params, w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	id := params["id"]
 	article := new(models.Article)
@@ -71,94 +80,6 @@ func SignUp(rnd render.Render) {
 }
 func SignIn(rnd render.Render) {
 	rnd.HTML(200, "signIn", nil)
-}
-func GuestCabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
-	userID := session.Get("userID").(string)
-	if userID == "" {
-		rnd.Redirect("/")
-		return
-	}
-	user, err := models.GetUserByID(userID, db)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-	if user.Access == 1 {
-		profile, err := models.GetProfileByUserID(userID, db)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		rnd.HTML(200, "guest", map[string]interface{}{
-			"Profile": profile,
-			"User":    user})
-	} else {
-		rnd.Redirect("/")
-		return
-	}
-
-}
-
-func AdminCabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
-	userID := session.Get("userID").(string)
-	if userID == "" {
-		rnd.Redirect("/")
-		return
-	}
-	user, err := models.GetUserByID(userID, db)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-	if user.Access == 2 {
-		profile, err := models.GetProfileByUserID(userID, db)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		feedbacks, err := models.GetAllFeedbacks(db)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		rnd.HTML(200, "admin", map[string]interface{}{
-			"Profile":   profile,
-			"Feedbacks": feedbacks,
-			"User":      user})
-	} else {
-		rnd.Redirect("/")
-		return
-	}
-}
-
-func Cabinet(rnd render.Render, db *sql.DB, session sessions.Session) {
-	userID := session.Get("userID").(string)
-	if userID == "" {
-		rnd.Redirect("/")
-		return
-	}
-	user, err := models.GetUserByID(userID, db)
-	if err != nil {
-		log.Print(err)
-		return
-	}
-	switch user.Access {
-	case 0:
-		{
-			rnd.Redirect("/")
-			return
-		}
-	case 1:
-		{
-			rnd.Redirect("/guest")
-			return
-		}
-	case 2:
-		{
-			rnd.Redirect("/admin")
-			return
-		}
-	}
 }
 
 func AddComment(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {

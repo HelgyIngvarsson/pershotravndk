@@ -43,7 +43,7 @@ func main() {
 	m.Use(cors.Allow(&cors.Options{
 		AllowOrigins:     []string{"http://localhost:3000", "https://pershotravndk.herokuapp.com"},
 		AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "PATCH"},
-		AllowHeaders:     []string{"Origin"},
+		AllowHeaders:     []string{"Origin", "x-access-token"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
@@ -56,13 +56,7 @@ func main() {
 	m.Get("/api/getAdmins", routes.GetAdmins)
 	m.Get("/api/getArticle/:id", routes.GetArticle)
 	m.Post("/api/registration", routes.Registration)
-	// m.Post("/feedback", routes.LeaveFeedback)
-	// m.Post("/post-anonse", routes.PostAnonse)
-	// m.Post("/post-article", routes.PostArticle)
-	// m.Post("/auth", routes.Authorization)
-	// m.Post("/add-comment", routes.AddComment)
-	// m.Get("/confirm-email/:token", routes.ConfirmProfile)
-	// m.Get("/article/:id", routes.GetArticle)
+	m.Get("/api/current_profile", routes.VarifyToken, routes.GetProfile)
 	port, err := determineListenAddress()
 	if err != nil {
 		m.Run() //run on default port

@@ -53,7 +53,7 @@ func LogIn(rnd render.Render, SigningKey []byte, w http.ResponseWriter, r *http.
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-access-token")
 }
 
 func Registration(rnd render.Render, SigningKey []byte, w http.ResponseWriter, r *http.Request, db *sql.DB) {
@@ -99,7 +99,6 @@ func VarifyToken(rnd render.Render, SigningKey []byte, w http.ResponseWriter, r 
 	if claims, err := token.Claims.(jwt.MapClaims); err && token.Valid {
 		userID = claims["userID"].(string)
 	}
-	// ctx := context.WithValue(r.Context(), "userID", userID)
 	r.Header.Set("UserID", userID)
 }
 
