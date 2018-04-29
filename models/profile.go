@@ -16,8 +16,8 @@ type Profile struct {
 }
 
 func InsertProfile(profile *Profile, db *sql.DB) error {
-	_, err := db.Exec("INSERT INTO \"profile\"(name, sername, email, mailing, description, user_id) VALUES ($1, $2, $3, $4, $5, $6)",
-		profile.Name, profile.Sername, profile.Email, profile.Mailing, profile.Description, profile.UserID)
+	_, err := db.Exec("INSERT INTO \"profile\"(name, sername, email, mailing, description, user_id, avatar_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+		profile.Name, profile.Sername, profile.Email, profile.Mailing, profile.Description, profile.UserID, profile.Avatar.ImageID)
 	if err != nil {
 		return err
 	}
@@ -25,6 +25,15 @@ func InsertProfile(profile *Profile, db *sql.DB) error {
 }
 func DeleteProfile(userID string, db *sql.DB) error {
 	_, err := db.Exec("delete from \"profile\" where user_id = $1", userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateProfie(profile *Profile, db *sql.DB) error {
+	_, err := db.Exec("UPDATE public.profile SET profile_id=$1, name=$2, sername=$3, email=$4, mailing=$5, description=$6 WHERE user_id=$7;",
+		profile.ProfileID, profile.Name, profile.Sername, profile.Email, profile.Mailing, profile.Description, profile.UserID)
 	if err != nil {
 		return err
 	}

@@ -66,7 +66,9 @@ func Registration(rnd render.Render, SigningKey []byte, w http.ResponseWriter, r
 	var req reqData
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
+		log.Print(err)
 		rnd.JSON(500, map[string]interface{}{"success": false, "token": nil})
+		return
 	}
 	user := new(models.User)
 	user.Username = req.Username
@@ -74,7 +76,25 @@ func Registration(rnd render.Render, SigningKey []byte, w http.ResponseWriter, r
 
 	userID, err := models.InsertUser(user, db)
 	if err != nil {
+		log.Print(err)
 		rnd.JSON(500, map[string]interface{}{"success": false, "token": nil})
+		return
+	}
+	profile := new(models.Profile)
+	profile.Avatar = new(models.Image)
+	profile.Avatar.ImageID, err = models.InsertEmptyImage(db)
+	if err != nil {
+		log.Print(err)
+		rnd.JSON(500, map[string]interface{}{"success": false, "token": nil})
+		return
+	}
+	profile.Email = req.Email
+	profile.UserID = userID
+	err = models.InsertProfile(profile, db)
+	if err != nil {
+		log.Print(err)
+		rnd.JSON(500, map[string]interface{}{"success": false, "token": nil})
+		return
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userID": userID,

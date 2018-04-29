@@ -5,11 +5,11 @@ import (
 )
 
 type Feedback struct {
-	ID      string
-	Message string
-	UserID  string
-	User    *User
-	Date    string
+	ID      string `json:"id,omitempty"`
+	Message string `json:"message,omitempty"`
+	UserID  string `json:"user_id,omitempty"`
+	User    *User  `json:"-"`
+	Date    string `json:"date,omitempty"`
 }
 
 func InsertFeedback(feedback *Feedback, db *sql.DB) error {

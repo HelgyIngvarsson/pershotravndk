@@ -57,6 +57,9 @@ func main() {
 	m.Get("/api/getArticle/:id", routes.GetArticle)
 	m.Post("/api/registration", routes.Registration)
 	m.Get("/api/current_profile", routes.VarifyToken, routes.GetProfile)
+	m.Post("/api/update_profile", routes.VarifyToken, routes.UpdateProfile)
+	m.Post("/api/send_feedback", routes.VarifyToken, routes.LeaveFeedback)
+	m.Post("/api/update_image", routes.VarifyToken, routes.UpdateImage)
 	port, err := determineListenAddress()
 	if err != nil {
 		m.Run() //run on default port

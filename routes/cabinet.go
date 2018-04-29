@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -10,19 +11,63 @@ import (
 	"pershotravndk.com/models"
 )
 
-func LeaveFeedback(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
-
-	feedback := new(models.Feedback)
-	feedback.Message = r.FormValue("feedback")
-	feedback.UserID = session.Get("userID").(string)
-
-	err := models.InsertFeedback(feedback, db)
+func GetProfile(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	userID := r.Header.Get("userID")
+	profile, err := models.GetProfileByUserID(userID, db)
 	if err != nil {
-		log.Print(err)
+		rnd.Error(404)
+		return
 	}
-	rnd.Redirect("/guest")
+	rnd.JSON(200, map[string]interface{}{"profile": profile})
 }
 
+func UpdateProfile(rnd render.Render, w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	userID := r.Header.Get("userID")
+	profile := new(models.Profile)
+	err := json.NewDecoder(r.Body).Decode(&profile)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	profile.UserID = userID
+	err = models.UpdateProfie(profile, db)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	rnd.JSON(200, map[string]interface{}{"success": true})
+}
+
+func LeaveFeedback(rnd render.Render, r *http.Request, db *sql.DB) {
+	userID := r.Header.Get("userID")
+	feedback := new(models.Feedback)
+	err := json.NewDecoder(r.Body).Decode(&feedback)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	feedback.UserID = userID
+	err = models.InsertFeedback(feedback, db)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	rnd.JSON(200, map[string]interface{}{"success": true})
+}
+func UpdateImage(rnd render.Render, r *http.Request, db *sql.DB) {
+	image := new(models.Image)
+	err := json.NewDecoder(r.Body).Decode(&image)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	err = models.UpdateImage(image, db)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	rnd.JSON(200, map[string]interface{}{"success": true})
+}
 func PostAnonse(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
 
 	anonse := new(models.Anonse)
