@@ -13,7 +13,7 @@ type Album struct {
 }
 
 func GetAlbums(db *sql.DB) ([]*Album, error) {
-	rows, err := db.Query("SELECT * from album")
+	rows, err := db.Query("SELECT * from album where album_id>1")
 	if err != nil {
 		log.Print(err)
 		return nil, err
