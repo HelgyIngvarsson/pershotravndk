@@ -60,6 +60,8 @@ func main() {
 	m.Post("/api/update_profile", routes.VarifyToken, routes.UpdateProfile)
 	m.Post("/api/send_feedback", routes.VarifyToken, routes.LeaveFeedback)
 	m.Post("/api/update_image", routes.VarifyToken, routes.UpdateImage)
+	m.Post("/api/send_comment", routes.VarifyToken, routes.SendComment)
+
 	port, err := determineListenAddress()
 	if err != nil {
 		m.Run() //run on default port

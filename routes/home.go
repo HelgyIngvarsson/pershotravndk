@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -73,17 +74,21 @@ func SignIn(rnd render.Render) {
 	rnd.HTML(200, "signIn", nil)
 }
 
-func AddComment(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
+func SendComment(rnd render.Render, r *http.Request, db *sql.DB, session sessions.Session) {
 
+	userID := r.Header.Get("userID")
 	comment := new(models.Comment)
-	comment.UserID = session.Get("userID").(string)
-	comment.ArticleID = r.FormValue("article_id")
-	comment.Body = r.FormValue("comment_body")
-
-	err := models.InsertComment(comment, db)
+	err := json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
-		log.Print(err)
-		rnd.Redirect("/article/" + comment.ArticleID)
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
 	}
-	rnd.Redirect("/article/" + comment.ArticleID)
+	comment.UserID = userID
+	err = models.InsertComment(comment, db)
+	if err != nil {
+		rnd.JSON(200, map[string]interface{}{"success": false})
+		return
+	}
+	comment.Profile, _ = models.GetProfileByUserID(userID, db)
+	rnd.JSON(200, map[string]interface{}{"success": true, "comment": comment})
 }
